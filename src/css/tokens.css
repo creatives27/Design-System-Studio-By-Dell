@@ -1,0 +1,223 @@
+/* ============================================================
+   TOKENS.CSS — Design System Custom Properties
+   ============================================================
+   HOW TO EDIT:
+   - Change --font-sans / --font-display to swap fonts globally
+   - Change --brand-h, --brand-s, --brand-l to set the default brand color
+   - Change --r-md, --r-lg etc. to adjust all corner radii
+   - The JS engine (engine.js) overwrites brand values live in the browser
+   ============================================================ */
+
+:root {
+  /* ── BRAND COLOR (overwritten live by engine.js) ──────────── */
+  --brand-h: 262;
+  --brand-s: 57%;
+  --brand-l: 55%;
+  --brand-hex: #7A48CD;
+
+  --secondary-h: 335;
+  --secondary-s: 57%;
+  --secondary-l: 57%;
+  --secondary-hex: #D3507A;
+
+  /* ── GENERATED BRAND SCALE (auto from brand-h/s/l) ───────── */
+  --p50:  hsl(var(--brand-h), 80%, 97%);
+  --p100: hsl(var(--brand-h), 70%, 93%);
+  --p200: hsl(var(--brand-h), 60%, 86%);
+  --p300: hsl(var(--brand-h), 55%, 76%);
+  --p400: hsl(var(--brand-h), 52%, 65%);
+  --p500: hsl(var(--brand-h), 54%, 60%);
+  --p600: hsl(var(--brand-h), var(--brand-s), var(--brand-l));
+  --p700: hsl(var(--brand-h), 55%, 45%);
+  --p800: hsl(var(--brand-h), 56%, 35%);
+  --p900: hsl(var(--brand-h), 58%, 25%);
+  --p950: hsl(var(--brand-h), 60%, 18%);
+
+  /* ── GENERATED SECONDARY SCALE ────────────────────────────── */
+  --s50:  hsl(var(--secondary-h), 80%, 97%);
+  --s100: hsl(var(--secondary-h), 70%, 92%);
+  --s200: hsl(var(--secondary-h), 62%, 83%);
+  --s300: hsl(var(--secondary-h), 60%, 71%);
+  --s400: hsl(var(--secondary-h), 58%, 61%);
+  --s500: hsl(var(--secondary-h), var(--secondary-s), var(--secondary-l));
+  --s600: hsl(var(--secondary-h), 54%, 47%);
+  --s700: hsl(var(--secondary-h), 55%, 37%);
+  --s800: hsl(var(--secondary-h), 56%, 28%);
+  --s900: hsl(var(--secondary-h), 58%, 21%);
+  --s950: hsl(var(--secondary-h), 60%, 14%);
+
+  /* ── NEUTRAL GREY SCALE (fixed — slight purple undertone) ─── */
+  --g50:  #F7F7FB;
+  --g100: #EFEFF0;
+  --g200: #D9D8DB;
+  --g300: #C6C4C8;
+  --g400: #BEBCC1;
+  --g500: #9F9DA2;
+  --g600: #827F85;
+  --g700: #737175;
+  --g800: #5B585E;
+  --g900: #423F44;
+  --g950: #2B292D;
+
+  /* ── SEMANTIC / FUNCTIONAL COLORS ─────────────────────────── */
+  /* Edit these to change your success/warning/error/info palette */
+  --success:        #15803D;
+  --success-bg:     #F0FDF4;
+  --success-border: #BBF7D0;
+  --warning:        #B45309;
+  --warning-bg:     #FFFBEB;
+  --warning-border: #FDE68A;
+  --error:          #B91C1C;
+  --error-bg:       #FEF2F2;
+  --error-border:   #FECACA;
+  --info:           #1D4ED8;
+  --info-bg:        #EFF6FF;
+  --info-border:    #BFDBFE;
+
+  /* ── SEMANTIC ALIASES — LIGHT MODE ────────────────────────── */
+  /* These are what you use in components — not raw hex */
+  --color-brand:            var(--p600);
+  --color-brand-hover:      var(--p700);
+  --color-brand-active:     var(--p800);
+  --color-brand-subtle:     var(--p100);
+  --color-brand-border:     var(--p200);
+  --color-secondary:        var(--s500);
+  --color-secondary-hover:  var(--s600);
+  --color-secondary-subtle: var(--s100);
+
+  --text-primary:   var(--g950);
+  --text-secondary: var(--g700);
+  --text-tertiary:  var(--g600);
+  --text-disabled:  var(--g400);
+  --text-inverse:   #fff;
+  --text-brand:     var(--p600);
+  --text-accent:    var(--s600);
+
+  --surf-page:   var(--g50);
+  --surf-card:   #fff;
+  --surf-raised: #fff;
+  --surf-sunken: var(--g100);
+  --surf-overlay: rgba(0, 0, 0, 0.45);
+
+  --border-subtle:  var(--g100);
+  --border-default: var(--g200);
+  --border-strong:  var(--g300);
+  --border-focus:   var(--p600);
+
+  --shadow-sm:    0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md:    0 4px 16px rgba(0, 0, 0, 0.10);
+  --shadow-lg:    0 12px 32px rgba(0, 0, 0, 0.14);
+  --shadow-focus: 0 0 0 3px color-mix(in srgb, var(--p600) 25%, transparent);
+
+  /* ── SPACING — 4px GRID (default) ─────────────────────────── */
+  /* Switch to 8pt in [data-grid="8"] below */
+  --grid-unit: 4px;
+  --sp-1:  4px;
+  --sp-2:  8px;
+  --sp-3:  12px;
+  --sp-4:  16px;
+  --sp-5:  20px;
+  --sp-6:  24px;
+  --sp-8:  32px;
+  --sp-10: 40px;
+  --sp-12: 48px;
+  --sp-16: 64px;
+  --sp-20: 80px;
+
+  /* ── BORDER RADIUS ─────────────────────────────────────────── */
+  /* Edit these to change the roundness feel of the entire system */
+  --r-none: 0;
+  --r-sm:   4px;
+  --r-md:   8px;
+  --r-lg:   12px;
+  --r-xl:   16px;
+  --r-2xl:  24px;
+  --r-full: 9999px;
+
+  /* ── TYPOGRAPHY ────────────────────────────────────────────── */
+  /* Edit --font-sans to change the main UI font globally */
+  /* Edit --font-display to change heading font only */
+  --font-sans:    'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-display: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-mono:    'DM Mono', 'Courier New', monospace;
+
+  --fw-regular:  400;
+  --fw-medium:   500;
+  --fw-semibold: 600;
+  --fw-bold:     700;
+
+  /* ── SIDEBAR WIDTH ─────────────────────────────────────────── */
+  --sidebar-w: 256px;
+}
+
+/* ── APPLE 8pt GRID OVERRIDE ─────────────────────────────────── */
+/* Toggled by JS when user clicks "8pt Apple" button */
+[data-grid="8"] {
+  --grid-unit: 8px;
+  --sp-1:  8px;
+  --sp-2:  16px;
+  --sp-3:  24px;
+  --sp-4:  32px;
+  --sp-5:  40px;
+  --sp-6:  48px;
+  --sp-8:  64px;
+  --sp-10: 80px;
+  --sp-12: 96px;
+  --sp-16: 128px;
+  /* Apple HIG uses slightly larger radius values */
+  --r-sm:  6px;
+  --r-md:  10px;
+  --r-lg:  14px;
+  --r-xl:  20px;
+  --r-2xl: 28px;
+}
+
+/* ── DARK MODE OVERRIDES ─────────────────────────────────────── */
+/* Toggled by JS when user clicks "Dark" button */
+/* All dark surface colors are generated from the brand hue */
+[data-theme="dark"] {
+  --surf-page:    hsl(var(--brand-h), 60%, 7%);
+  --surf-card:    hsl(var(--brand-h), 55%, 10%);
+  --surf-raised:  hsl(var(--brand-h), 50%, 14%);
+  --surf-sunken:  hsl(var(--brand-h), 62%, 5%);
+  --surf-overlay: rgba(0, 0, 0, 0.65);
+
+  --border-subtle:  hsl(var(--brand-h), 40%, 13%);
+  --border-default: hsl(var(--brand-h), 35%, 18%);
+  --border-strong:  hsl(var(--brand-h), 32%, 24%);
+
+  --text-primary:   hsl(var(--brand-h), 50%, 94%);
+  --text-secondary: hsl(var(--brand-h), 25%, 60%);
+  --text-tertiary:  hsl(var(--brand-h), 22%, 48%);
+  --text-disabled:  hsl(var(--brand-h), 20%, 35%);
+
+  --color-brand:            hsl(var(--brand-h), 65%, 70%);
+  --color-brand-hover:      hsl(var(--brand-h), 60%, 60%);
+  --color-brand-subtle:     hsl(var(--brand-h), 45%, 18%);
+  --color-brand-border:     hsl(var(--brand-h), 40%, 28%);
+  --color-secondary:        hsl(var(--secondary-h), 65%, 72%);
+  --color-secondary-hover:  hsl(var(--secondary-h), 60%, 62%);
+  --color-secondary-subtle: hsl(var(--secondary-h), 42%, 18%);
+
+  --text-brand:  hsl(var(--brand-h), 65%, 75%);
+  --text-accent: hsl(var(--secondary-h), 65%, 75%);
+
+  --shadow-sm:    0 1px 4px rgba(0, 0, 0, 0.4);
+  --shadow-md:    0 4px 20px rgba(0, 0, 0, 0.5);
+  --shadow-lg:    0 12px 40px rgba(0, 0, 0, 0.6);
+  --shadow-focus: 0 0 0 3px color-mix(in srgb, var(--color-brand) 30%, transparent);
+
+  /* Dark mode semantic colors — desaturated for eye comfort */
+  --success:        #4ADE80;
+  --success-bg:     #0D2B1A;
+  --success-border: #145228;
+  --warning:        #FCD34D;
+  --warning-bg:     #2B1F07;
+  --warning-border: #4A370A;
+  --error:          #FCA5A5;
+  --error-bg:       #2B0D0D;
+  --error-border:   #4A1414;
+  --info:           #93C5FD;
+  --info-bg:        #0C1A35;
+  --info-border:    #142D5C;
+}
