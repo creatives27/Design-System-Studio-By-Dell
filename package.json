@@ -1,0 +1,13 @@
+{
+  "name": "design-system-studio",
+  "version": "1.0.0",
+  "description": "A reusable design system documentation and token generator",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
+  }
+}

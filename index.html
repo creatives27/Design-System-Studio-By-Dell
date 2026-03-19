@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" data-grid="4">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design System Studio</title>
+
+<!-- DM Mono only — UI uses system Helvetica -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<!--
+  ============================================================
+  CSS FILES — edit these to customize the system
+  ============================================================
+  tokens.css     → ✏️  brand color, fonts, spacing, radius
+  base.css       → layout, sidebar, hero, responsive
+  components.css → buttons, cards, inputs, badges, etc.
+  ============================================================
+-->
+<link rel="stylesheet" href="./src/css/tokens.css">
+<link rel="stylesheet" href="./src/css/base.css">
+<link rel="stylesheet" href="./src/css/components.css">
+</head>
+<body>
+
+<div class="app">
+
+<!-- ═════════════════════════════════════════════════════════════
+     SIDEBAR
+     ═════════════════════════════════════════════════════════════ -->
+<nav class="sidebar" id="sidebar">
+  <div class="sb-header">
+    <div class="sb-logo">
+      <div class="sb-logo-mark">
+        <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5" fill="white" opacity=".9"/><circle cx="8" cy="8" r="2.5" fill="white"/></svg>
+      </div>
+      <div>
+        <div class="sb-product-name" id="sb-name">Design Studio</div>
+      </div>
+    </div>
+    <div class="sb-version">Design System · v1.0</div>
+  </div>
+
+  <div class="sb-body">
+    <div class="sb-section-label">Configure</div>
+    <a class="sb-link active" data-target="studio"><span class="sb-dot"></span>Brand Studio</a>
+
+    <div class="sb-section-label">Foundation</div>
+    <a class="sb-link" data-target="colors"><span class="sb-dot"></span>Colors</a>
+    <a class="sb-link" data-target="typography"><span class="sb-dot"></span>Typography</a>
+    <a class="sb-link" data-target="spacing"><span class="sb-dot"></span>Spacing & Grid</a>
+    <a class="sb-link" data-target="radius"><span class="sb-dot"></span>Border Radius</a>
+    <a class="sb-link" data-target="shadows"><span class="sb-dot"></span>Shadows</a>
+
+    <div class="sb-section-label">Components</div>
+    <a class="sb-link" data-target="buttons"><span class="sb-dot"></span>Buttons</a>
+    <a class="sb-link" data-target="badges"><span class="sb-dot"></span>Badges & Tags</a>
+    <a class="sb-link" data-target="inputs"><span class="sb-dot"></span>Inputs</a>
+    <a class="sb-link" data-target="cards"><span class="sb-dot"></span>Cards</a>
+    <a class="sb-link" data-target="avatars"><span class="sb-dot"></span>Avatars</a>
+    <a class="sb-link" data-target="alerts"><span class="sb-dot"></span>Alerts</a>
+    <a class="sb-link" data-target="formcontrols"><span class="sb-dot"></span>Form Controls</a>
+    <a class="sb-link" data-target="table"><span class="sb-dot"></span>Tables</a>
+    <a class="sb-link" data-target="progress"><span class="sb-dot"></span>Progress</a>
+    <a class="sb-link" data-target="tabs"><span class="sb-dot"></span>Tabs</a>
+    <a class="sb-link" data-target="toasts"><span class="sb-dot"></span>Toasts</a>
+    <a class="sb-link" data-target="misc"><span class="sb-dot"></span>Chips & Dividers</a>
+
+    <div class="sb-section-label">Dark Mode</div>
+    <a class="sb-link" data-target="darksurfaces"><span class="sb-dot"></span>Dark Surfaces</a>
+    <a class="sb-link" data-target="darksemantics"><span class="sb-dot"></span>Dark Semantics</a>
+
+    <div class="sb-section-label">Extras</div>
+    <a class="sb-link" data-target="gradients"><span class="sb-dot"></span>Gradients</a>
+    <a class="sb-link" data-target="resources"><span class="sb-dot"></span>Resources & Tools</a>
+
+    <div class="sb-section-label">Tokens</div>
+    <a class="sb-link" data-target="usagetokens"><span class="sb-dot"></span>Usage Tokens</a>
+    <a class="sb-link" data-target="export"><span class="sb-dot"></span>Export JSON</a>
+  </div>
+
+  <div class="sb-footer">
+    <div style="font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-disabled);margin-bottom:6px">Controls</div>
+    <div style="font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-disabled);margin-bottom:5px">Theme</div>
+    <div class="ctrl-row" style="margin-bottom:6px">
+      <button class="ctrl-btn on" id="btn-light" onclick="setTheme('light')">☀ Light</button>
+      <button class="ctrl-btn" id="btn-dark" onclick="setTheme('dark')">Brand</button>
+      <button class="ctrl-btn" id="btn-dark-grey" onclick="setTheme('grey')">Grey</button>
+    </div>
+    <div class="ctrl-row">
+      <button class="ctrl-btn on" id="btn-4px" onclick="setGrid('4')" title="Material 4px grid">4px Grid</button>
+      <button class="ctrl-btn" id="btn-8pt" onclick="setGrid('8')" title="Apple 8pt grid">8pt Apple</button>
+    </div>
+  </div>
+</nav>
+<div class="sidebar-backdrop" id="backdrop" onclick="closeSidebar()"></div>
+
+<!-- ═════════════════════════════════════════════════════════════
+     MAIN
+     ═════════════════════════════════════════════════════════════ -->
+<main class="main">
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+      <span class="topbar-crumb">Design System /</span>
+      <span class="topbar-section" id="topbar-section">Brand Studio</span>
+    </div>
+    <div class="topbar-right">
+      <button class="btn btn-ghost btn-sm" onclick="exportTokens()">Export JSON</button>
+      <button class="btn btn-primary btn-sm" onclick="copyAllCSS()">Copy CSS vars</button>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-kicker">Design System Studio</div>
+    <h1 class="hero-title">Every component.<br><span class="brand-accent">One brand color.</span></h1>
+    <p class="hero-desc">Configure your brand color below. Every token, scale, component, and dark mode surface updates instantly. WCAG tested. Ready to export to Tokens Studio or copy as CSS variables.</p>
+    <div class="hero-pills">
+      <span class="hero-pill"><span class="pill-dot" style="background:var(--color-brand)"></span><span id="pill-brand-hex">#7A48CD</span></span>
+      <span class="hero-pill"><span class="pill-dot" style="background:var(--color-secondary)"></span><span id="pill-sec-hex">#D3507A</span></span>
+      <span class="hero-pill"><span class="pill-dot" style="background:#22C55E"></span>WCAG AA live test</span>
+      <span class="hero-pill"><span class="pill-dot" style="background:#3B82F6"></span>Light + Dark mode</span>
+      <span class="hero-pill"><span class="pill-dot" style="background:#F59E0B"></span>4px · 8pt grid</span>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ══════════════════════════════════════════════════════════
+         BRAND STUDIO
+         ══════════════════════════════════════════════════════════ -->
+    <section class="section" id="studio">
+      <div class="section-kicker">00 · Configure</div>
+      <h2 class="section-title">Brand Studio</h2>
+      <p class="section-desc">Set your brand color once. The entire system — scales, tokens, components, dark mode — regenerates live. Change the color for a new project and everything cascades.</p>
+      <hr class="section-rule">
+
+      <div class="studio-grid">
+        <!-- Brand color -->
+        <div class="studio-card">
+          <div class="studio-card-title">Primary Brand Color</div>
+          <div class="studio-input-row">
+            <div class="color-preview" id="brand-preview" style="background:#7A48CD">
+              <input type="color" id="brand-color-picker" value="#7A48CD" oninput="onBrandPick(this.value)">
+            </div>
+            <input class="studio-hex-input" id="brand-hex-input" value="#7A48CD" placeholder="#7A48CD" oninput="onBrandType(this.value)" maxlength="7">
+          </div>
+          <div class="studio-label">Product / Company name</div>
+          <input class="studio-name-input" id="brand-name" value="Design Studio" placeholder="Your product name" oninput="onNameChange(this.value)">
+          <div class="wcag-live" style="margin-top:12px">
+            <div class="wcag-live-title">WCAG contrast on white — live</div>
+            <div id="wcag-live-rows"></div>
+          </div>
+        </div>
+
+        <!-- Secondary color -->
+        <div class="studio-card">
+          <div class="studio-card-title">Secondary / Accent Color</div>
+          <div class="studio-input-row">
+            <div class="color-preview" id="sec-preview" style="background:#D3507A">
+              <input type="color" id="sec-color-picker" value="#D3507A" oninput="onSecPick(this.value)">
+            </div>
+            <input class="studio-hex-input" id="sec-hex-input" value="#D3507A" placeholder="#D3507A" oninput="onSecType(this.value)" maxlength="7">
+          </div>
+          <div class="studio-label">Grid system</div>
+          <div class="grid-toggle-row">
+            <button class="grid-btn active" id="gbtn-4" onclick="setGrid('4')">
+              <div style="font-size:13px;font-weight:700">4px</div>
+              <div style="font-size:9px;opacity:.7;margin-top:2px">Material Design</div>
+            </button>
+            <button class="grid-btn" id="gbtn-8" onclick="setGrid('8')">
+              <div style="font-size:13px;font-weight:700">8pt</div>
+              <div style="font-size:9px;opacity:.7;margin-top:2px">Apple HIG</div>
+            </button>
+          </div>
+          <div class="studio-label" style="margin-top:12px">Pairing strategy</div>
+          <div id="pairing-result" style="font-size:12px;color:var(--text-secondary);line-height:1.6;padding:10px 12px;background:var(--surf-sunken);border-radius:var(--r-md);border:1px solid var(--border-default)">
+            Run the color engine to see the hue relationship.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         COLORS
+         ══════════════════════════════════════════════════════════ -->
+    <section class="section" id="colors">
+      <div class="section-kicker">01 · Foundation</div>
+      <h2 class="section-title">Color System</h2>
+      <p class="section-desc">Full 50–950 scales generated from your brand color. Each shade has its WCAG contrast ratio against white. Click any chip to copy the hex value.</p>
+      <hr class="section-rule">
+
+      <div class="scale-wrap">
+        <div class="scale-label">Primary Brand Scale</div>
+        <div class="scale-row" id="brand-scale"></div>
+      </div>
+      <div class="scale-wrap">
+        <div class="scale-label">Secondary / Accent Scale</div>
+        <div class="scale-row" id="secondary-scale"></div>
+      </div>
+      <div class="scale-wrap">
+        <div class="scale-label">Neutral Grey (slight brand undertone)</div>
+        <div class="scale-row" id="grey-scale"></div>
+      </div>
+
+      <div class="scale-label" style="margin-top:20px">Semantic System Colors</div>
+      <div class="semantic-grid" id="semantic-grid"></div>
+
+      <div class="rule-box">
+        <strong>WCAG minimum rules:</strong> Use Brand 600+ for body text on white (min 4.5:1 AA). Use Brand 400–500 only for large text (18px+), icons, and borders (min 3:1). Use 50–300 exclusively for surface fills, chips, and hover states — never as text. The same rules apply to your secondary scale.
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         TYPOGRAPHY
+         ══════════════════════════════════════════════════════════ -->
+    <section class="section" id="typography">
+      <div class="section-kicker">02 · Foundation</div>
+      <h2 class="section-title">Typography</h2>
+      <p class="section-desc">Helvetica Neue for all headings and display text — timeless, authoritative. DM Mono for code and data. Helvetica's neutrality means the brand color leads, not the font.</p>
+      <hr class="section-rule">
+
+      <div class="type-row type-hdr">
+        <span>Style / Spec</span><span>Preview</span><span>Use for</span>
+      </div>
+      <div class="type-row">
+        <div class="type-meta"><b>Display</b>Helvetica Neue · 48px · 800<br>-0.03em tracking</div>
+        <div style="font-family:var(--font-display);font-size:38px;font-weight:800;letter-spacing:-.02em;color:var(--text-primary);letter-spacing:-.03em;line-height:1.1">Display</div>
+        <span class="type-use">Hero</span>
+      </div>
+      <div class="type-row">
+        <div class="type-meta"><b>H1</b>Helvetica Neue · 32px · 700<br>-0.02em</div>
+        <div style="font-family:var(--font-display);font-size:32px;font-weight:700;color:var(--text-primary);letter-spacing:-.02em">Page Title</div>
+        <span class="type-use">Pages</span>
+      </div>
+      <div class="type-row">
+        <div class="type-meta"><b>H2</b>Helvetica Neue · 24px · 700</div>
+        <div style="font-family:var(--font-display);font-size:24px;font-weight:700;color:var(--text-primary)">Section Title</div>
+        <span class="type-use">Sections</span>
+      </div>
+      <div class="type-row">
+        <div class="type-meta"><b>H3</b>DM Sans · 18px · 600</div>
+        <div style="font-size:18px;font-weight:600;color:var(--text-primary)">Card Title</div>
+        <span class="type-use">Cards</span>
+      </div>
+      <div class="type-row">
+        <div class="type-meta"><b>H4</b>DM Sans · 15px · 600</div>
+        <div style="font-size:15px;font-weight:600;color:var(--text-primary)">Subsection</div>
+        <span class="type-use">Sub-heads</span>
+      </div>
+      <div class="type-row">
+        <div class="type-meta"><b>Body LG</b>DM Sans · 16px · 400<br>1.7 line-height</div>
+        <div style="font-size:16px;color:var(--text-primary);line-height:1.7;max-width:340px">Long-form reading body. Clear and readable at comfortable scale.</div>
+        <span class="type-use">Articles</span>
+      </div>
+      <div class="type-row">
+        <div class="type-meta"><b>Body MD</b>DM Sans · 14px · 400<br>1.6 line-height</div>
+        <div style="font-size:14px;color:var(--text-primary);line-height:1.6;max-width:340px">Default UI text. Descriptions, labels, interface copy.</div>
+        <span class="type-use">UI default</span>
+      </div>
+      <div class="type-row">
+        <div class="type-meta"><b>Body SM</b>DM Sans · 13px · 400</div>
+        <div style="font-size:13px;color:var(--text-secondary)">Helper text, captions, timestamps.</div>
+        <span class="type-use">Helpers</span>
+      </div>
+      <div class="type-row">
+        <div class="type-meta"><b>Label</b>DM Sans · 12px · 500<br>0.01em tracking</div>
+        <div style="font-size:12px;font-weight:500;color:var(--text-secondary)">Form label text</div>
+        <span class="type-use">Labels</span>
+      </div>
+      <div class="type-row">
+        <div class="type-meta"><b>Overline</b>DM Sans · 11px · 700<br>0.08em · uppercase</div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-secondary)">EYEBROW TEXT</div>
+        <span class="type-use">Kickers</span>
+      </div>
+      <div class="type-row" style="border-bottom:none">
+        <div class="type-meta"><b>Mono</b>DM Mono · 13px · 400</div>
+        <div style="font-family:var(--font-mono);font-size:13px;color:var(--color-brand)" id="type-mono-preview">#7A48CD · rgba(122, 72, 205)</div>
+        <span class="type-use">Code · Data</span>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         SPACING
+         ══════════════════════════════════════════════════════════ -->
+    <section class="section" id="spacing">
+      <div class="section-kicker">03 · Foundation</div>
+      <h2 class="section-title">Spacing &amp; Grid</h2>
+      <p class="section-desc">4px base unit (Material Design) or 8pt base (Apple HIG). Every spacing value is a multiple of the base unit. Toggle above to switch systems.</p>
+      <hr class="section-rule">
+
+      <div id="spacing-grid-indicator" style="display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:var(--r-full);background:var(--color-brand-subtle);color:var(--color-brand);font-size:12px;font-weight:600;margin-bottom:var(--sp-5)">
+        <span id="grid-label-indicator">4px base grid (Material)</span>
+      </div>
+
+      <div id="spacing-bars"></div>
+
+      <div class="rule-box" style="margin-top:var(--sp-4)">
+        <strong>4px grid (Material)</strong> — More granular. 4, 8, 12, 16, 20, 24, 32, 48, 64. Optimal for data-dense UIs, dashboards, and enterprise products.<br><br>
+        <strong>8pt grid (Apple HIG)</strong> — Fewer values, larger jumps. 8, 16, 24, 32, 40, 48, 64. Optimal for consumer apps, marketing sites, and products following iOS/macOS conventions.
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         RADIUS
+         ══════════════════════════════════════════════════════════ -->
+    <section class="section" id="radius">
+      <div class="section-kicker">04 · Foundation</div>
+      <h2 class="section-title">Border Radius</h2>
+      <p class="section-desc">Consistent rounding creates visual cohesion. Each radius value has a strict component purpose — using the wrong one breaks the system's visual language.</p>
+      <hr class="section-rule">
+
+      <div class="radius-flex" id="radius-demo"></div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         SHADOWS
+         ══════════════════════════════════════════════════════════ -->
+    <section class="section" id="shadows">
+      <div class="section-kicker">05 · Foundation</div>
+      <h2 class="section-title">Elevation &amp; Shadows</h2>
+      <p class="section-desc">Brand-tinted shadows create depth while staying on-brand. In dark mode, borders replace shadows as the primary depth signal.</p>
+      <hr class="section-rule">
+
+      <div class="shadow-flex">
+        <div class="shadow-item">
+          <div class="shadow-box" style="box-shadow:var(--shadow-sm)"></div>
+          <div class="shadow-lbl">shadow-sm</div>
+          <div class="shadow-sub">Cards, inputs</div>
+        </div>
+        <div class="shadow-item">
+          <div class="shadow-box" style="box-shadow:var(--shadow-md)"></div>
+          <div class="shadow-lbl">shadow-md</div>
+          <div class="shadow-sub">Dropdowns, popovers</div>
+        </div>
+        <div class="shadow-item">
+          <div class="shadow-box" style="box-shadow:var(--shadow-lg)"></div>
+          <div class="shadow-lbl">shadow-lg</div>
+          <div class="shadow-sub">Modals, toasts</div>
+        </div>
+        <div class="shadow-item">
+          <div class="shadow-box" style="box-shadow:var(--shadow-focus); border:1.5px solid var(--border-focus)"></div>
+          <div class="shadow-lbl">focus-ring</div>
+          <div class="shadow-sub">Keyboard focus</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         BUTTONS
+         ══════════════════════════════════════════════════════════ -->
+    <section class="section" id="buttons">
+      <div class="section-kicker">06 · Components</div>
+      <h2 class="section-title">Buttons</h2>
+      <p class="section-desc">One primary button per screen. Use secondary for supporting actions. Ghost and outline for tertiary. Danger only for destructive actions.</p>
+      <hr class="section-rule">
+
+      <div class="demo-box">
+        <div class="demo-label">Variants — all update with brand color</div>
+        <div class="demo-body">
+          <button class="btn btn-primary">Primary</button>
+          <button class="btn btn-secondary">Secondary</button>
+          <button class="btn btn-outline">Outline</button>
+          <button class="btn btn-ghost">Ghost</button>
+          <button class="btn btn-accent">Accent</button>
+          <button class="btn btn-danger">Danger</button>
+        </div>
+      </div>
+      <div class="demo-box">
+        <div class="demo-label">Sizes — xs · sm · md · lg · xl</div>
+        <div class="demo-body" style="align-items:center">
+          <button class="btn btn-primary btn-xs">XSmall</button>
+          <button class="btn btn-primary btn-sm">Small</button>
+          <button class="btn btn-primary">Medium</button>
+          <button class="btn btn-primary btn-lg">Large</button>
+          <button class="btn btn-primary btn-xl">XLarge</button>
+        </div>
+      </div>
+      <div class="demo-box">
+        <div class="demo-label">States</div>
+        <div class="demo-body">
+          <button class="btn btn-primary">Default</button>
+          <button class="btn btn-primary" style="background:var(--color-brand-hover)">Hover</button>
+          <button class="btn btn-primary" style="background:var(--color-brand-active)">Active</button>
+          <button class="btn btn-primary" style="box-shadow:var(--shadow-focus)">Focus</button>
+          <button class="btn btn-primary" disabled>Disabled</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         BADGES
+         ══════════════════════════════════════════════════════════ -->
+    <section class="section" id="badges">
+      <div class="section-kicker">07 · Components</div>
+      <h2 class="section-title">Badges &amp; Tags</h2>
+      <p class="section-desc">Semantic color encoding for status. Each color has exactly one meaning — never repurpose error-red for anything other than errors.</p>
+      <hr class="section-rule">
+
+      <div class="demo-box">
+        <div class="demo-label">Semantic status badges</div>
+        <div class="demo-body">
+          <span class="badge badge-brand"><span class="badge-dot" style="background:var(--color-brand)"></span>Brand</span>
+          <span class="badge badge-accent"><span class="badge-dot" style="background:var(--color-secondary)"></span>Accent</span>
+          <span class="badge badge-success"><span class="badge-dot" style="background:var(--success)"></span>Success</span>
+          <span class="badge badge-warning"><span class="badge-dot" style="background:var(--warning)"></span>Warning</span>
+          <span class="badge badge-error"><span class="badge-dot" style="background:var(--error)"></span>Error</span>
+          <span class="badge badge-info"><span class="badge-dot" style="background:var(--info)"></span>Info</span>
+          <span class="badge badge-neutral">Neutral</span>
+          <span class="badge badge-solid">Solid</span>
+          <span class="badge badge-solid-accent">Accent solid</span>
+        </div>
+        <div class="demo-label">Sizes</div>
+        <div class="demo-body" style="align-items:center">
+          <span class="badge badge-brand badge-sm">Small</span>
+          <span class="badge badge-brand">Medium</span>
+          <span class="badge badge-brand badge-lg">Large</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         INPUTS
+         ══════════════════════════════════════════════════════════ -->
+    <section class="section" id="inputs">
+      <div class="section-kicker">08 · Components</div>
+      <h2 class="section-title">Inputs &amp; Forms</h2>
+      <p class="section-desc">Brand purple focus ring on all inputs — consistent, accessible, and on-brand. Error state always red, never brand color.</p>
+      <hr class="section-rule">
+
+      <div class="demo-box">
+        <div class="demo-label">Input states</div>
+        <div class="demo-body col" style="padding:20px 16px;gap:16px">
+          <div class="g2" style="width:100%">
+            <div class="field">
+              <label class="field-label">Full name</label>
+              <input class="input" type="text" placeholder="Enter full name">
+              <span class="field-hint">Default state</span>
+            </div>
+            <div class="field">
+              <label class="field-label">Email address</label>
+              <div class="input-group">
+                <span class="input-group-icon">✉</span>
+                <input class="input" type="email" placeholder="name@company.com" style="border-color:var(--border-focus);box-shadow:var(--shadow-focus)">
+              </div>
+              <span class="field-hint">Focused state</span>
+            </div>
+            <div class="field">
+              <label class="field-label">Policy number</label>
+              <input class="input is-error" type="text" value="S034">
+              <span class="field-error">Must be 8 characters (e.g. S0345841)</span>
+            </div>
+            <div class="field">
+              <label class="field-label">Coverage type</label>
+              <select class="select"><option>General Liability</option><option>Commercial Package</option><option>Professional Liability</option></select>
+            </div>
+            <div class="field" style="grid-column:1/-1">
+              <label class="field-label">Notes</label>
+              <textarea class="input" rows="3" placeholder="Add coverage notes..." style="resize:vertical"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         CARDS
+         ══════════════════════════════════════════════════════════ -->
+    <section class="section" id="cards">
+      <div class="section-kicker">09 · Components</div>
+      <h2 class="section-title">Cards</h2>
+      <p class="section-desc">Contained surfaces for grouping related content. Cards create hierarchy and improve scannability across all screen sizes.</p>
+      <hr class="section-rule">
+
+      <div class="g2">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Policy Review</div>
+            <div class="card-sub">General Liability · Pending UW</div>
+          </div>
+          <div class="card-body">Commercial package submitted 02/24. Awaiting underwriter review before binding.</div>
+          <div class="card-footer">
+            <button class="btn btn-ghost btn-sm">Dismiss</button>
+            <button class="btn btn-primary btn-sm">Review now</button>
+          </div>
+        </div>
+        <div class="card metric-card">
+          <div class="metric-label">Total Submissions</div>
+          <div class="metric-value">24,812</div>
+          <div class="metric-delta delta-up">↑ 12.4% this month</div>
+        </div>
+        <div class="card" style="padding:var(--sp-4) var(--sp-5)">
+          <div style="display:flex;gap:12px;align-items:flex-start">
+            <div class="avatar av-lg av-brand">RB</div>
+            <div>
+              <div style="font-size:15px;font-weight:600;color:var(--text-primary)">Richard Badoux</div>
+              <div style="font-size:13px;color:var(--text-secondary);margin-top:2px">Senior Broker</div>
+              <div style="margin-top:8px;display:flex;gap:6px">
+                <span class="badge badge-brand">Insurance</span>
+                <span class="badge badge-success">Active</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card card-brand">
+          <div class="card-header">
+            <div class="card-title">Get a Quote</div>
+            <div class="card-sub">Start a new submission</div>
+          </div>
+          <div class="card-body">General Liability or Commercial Package. Takes less than 5 minutes.</div>
+          <div class="card-footer">
+            <button style="background:rgba(255,255,255,.2);color:#fff;border:none;padding:7px 14px;border-radius:var(--r-md);font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font-sans)">Start now →</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         AVATARS
+         ══════════════════════════════════════════════════════════ -->
+    <section class="section" id="avatars">
+      <div class="section-kicker">10 · Components</div>
+      <h2 class="section-title">Avatars</h2>
+      <p class="section-desc">Initials-based user representation. Color variants encode role or team. Always provide a fallback neutral state.</p>
+      <hr class="section-rule">
+
+      <div class="demo-box">
+        <div class="demo-label">Sizes — xs · sm · md · lg · xl</div>
+        <div class="demo-body" style="align-items:center">
+          <div class="avatar av-xs av-brand">RB</div>
+          <div class="avatar av-sm av-brand">RB</div>
+          <div class="avatar av-md av-brand">RB</div>
+          <div class="avatar av-lg av-brand">RB</div>
+          <div class="avatar av-xl av-brand">RB</div>
+        </div>
+        <div class="demo-label">Color variants</div>
+        <div class="demo-body" style="align-items:center">
+          <div class="avatar av-lg av-brand">RB</div>
+          <div class="avatar av-lg av-accent">MR</div>
+          <div class="avatar av-lg av-success">AK</div>
+          <div class="avatar av-lg" style="background:var(--info-bg);color:var(--info)">PL</div>
+          <div class="avatar av-lg av-neutral">??</div>
+        </div>
+        <div class="demo-label">Avatar group</div>
+        <div class="demo-body">
+          <div class="av-group">
+            <div class="avatar av-md av-brand">RB</div>
+            <div class="avatar av-md av-accent">MR</div>
+            <div class="avatar av-md av-success">AK</div>
+            <div class="avatar av-md av-neutral">+4</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         ALERTS
+         ══════════════════════════════════════════════════════════ -->
+    <section class="section" id="alerts">
+      <div class="section-kicker">11 · Components</div>
+      <h2 class="section-title">Alerts</h2>
+      <p class="section-desc">Inline contextual messages. One color — one meaning. Never use red for non-error content, never use green for non-success content.</p>
+      <hr class="section-rule">
+
+      <div class="alert alert-brand" style="margin-bottom:8px">
+        <span class="alert-icon">★</span>
+        <div><div class="alert-title">Brand alert — updates with your color</div><div class="alert-desc">This uses your brand token directly. Changes when you update the brand color above.</div></div>
+      </div>
+      <div class="alert alert-success" style="margin-bottom:8px">
+        <span class="alert-icon">✓</span>
+        <div><div class="alert-title">Submission approved</div><div class="alert-desc">Your General Liability quote has been approved and is ready to bind.</div></div>
+      </div>
+      <div class="alert alert-warning" style="margin-bottom:8px">
+        <span class="alert-icon">⚠</span>
+        <div><div class="alert-title">Renewal in 14 days</div><div class="alert-desc">Policy S0345841 expires soon. Begin renewal to avoid a coverage lapse.</div></div>
+      </div>
+      <div class="alert alert-error" style="margin-bottom:8px">
+        <span class="alert-icon">✕</span>
+        <div><div class="alert-title">Submission failed</div><div class="alert-desc">Missing required field: Insured legal name. Please complete and resubmit.</div></div>
+      </div>
+      <div class="alert alert-info">
+        <span class="alert-icon">ℹ</span>
+        <div><div class="alert-title">Scheduled maintenance</div><div class="alert-desc">Saturday 02:00–04:00 EST. Some features may be unavailable.</div></div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         FORM CONTROLS
+         ══════════════════════════════════════════════════════════ -->
+    <section class="section" id="formcontrols">
+      <div class="section-kicker">12 · Components</div>
+      <h2 class="section-title">Form Controls</h2>
+      <p class="section-desc">All interactive controls use the brand color for their active/checked state. Reinforces a consistent interactive language across the product.</p>
+      <hr class="section-rule">
+
+      <div class="demo-box">
+        <div class="demo-label">Toggles</div>
+        <div class="demo-body col" style="padding:16px;gap:12px">
+          <div style="display:flex;align-items:center;gap:10px"><label class="toggle-wrap"><input type="checkbox" checked><span class="toggle-slider"></span></label><span style="font-size:14px;color:var(--text-primary)">Email notifications</span></div>
+          <div style="display:flex;align-items:center;gap:10px"><label class="toggle-wrap"><input type="checkbox"><span class="toggle-slider"></span></label><span style="font-size:14px;color:var(--text-primary)">Push notifications</span></div>
+          <div style="display:flex;align-items:center;gap:10px"><label class="toggle-wrap"><input type="checkbox" checked><span class="toggle-slider"></span></label><span style="font-size:14px;color:var(--text-primary)">Renewal alerts</span></div>
+        </div>
+        <div class="demo-label">Checkboxes</div>
+        <div class="demo-body col" style="padding:16px;gap:10px">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" class="checkbox" checked><span style="font-size:14px;color:var(--text-primary)">General Liability</span></label>
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" class="checkbox" checked><span style="font-size:14px;color:var(--text-primary)">Commercial Package</span></label>
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" class="checkbox"><span style="font-size:14px;color:var(--text-primary)">Professional Liability</span></label>
+          <label style="display:flex;align-items:center;gap:8px;cursor:not-allowed"><input type="checkbox" class="checkbox" disabled><span style="font-size:14px;color:var(--text-disabled)">Workers Compensation (unavailable)</span></label>
+        </div>
+        <div class="demo-label">Radio buttons</div>
+        <div class="demo-body col" style="padding:16px;gap:10px">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="radio" class="radio" name="coverage" checked><span style="font-size:14px;color:var(--text-primary)">Wholesale</span></label>
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="radio" class="radio" name="coverage"><span style="font-size:14px;color:var(--text-primary)">Retail</span></label>
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="radio" class="radio" name="coverage"><span style="font-size:14px;color:var(--text-primary)">Surplus Lines</span></label>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         TABLE
+         ══════════════════════════════════════════════════════════ -->
+    <section class="section" id="table">
+      <div class="section-kicker">13 · Components</div>
+      <h2 class="section-title">Tables</h2>
+      <p class="section-desc">Structured data with scannable rows. Hover highlights for row identification. Status badges encode state without relying on text alone.</p>
+      <hr class="section-rule">
+
+      <div class="table-wrap">
+        <table class="ds-table">
+          <thead><tr>
+            <th>Submission</th><th>Coverage</th><th>Insured</th><th>Carrier</th><th>Effective</th><th>Premium</th><th>Status</th>
+          </tr></thead>
+          <tbody>
+            <tr><td><span class="mono">S0345841</span></td><td>General Liability</td><td>Light Construction</td><td>Wholesale</td><td>02/24/26</td><td style="font-weight:600">$31,666</td><td><span class="badge badge-brand">In Progress</span></td></tr>
+            <tr><td><span class="mono">S0345842</span></td><td>Commercial Package</td><td>Apex Corp</td><td>Wholesale</td><td>03/01/26</td><td style="font-weight:600">$12,400</td><td><span class="badge badge-success">Approved</span></td></tr>
+            <tr><td><span class="mono">S0345843</span></td><td>General Liability</td><td>Green Build LLC</td><td>Surplus</td><td>03/15/26</td><td style="color:var(--text-tertiary)">—</td><td><span class="badge badge-error">Declined</span></td></tr>
+            <tr><td><span class="mono">S0345844</span></td><td>Prof. Liability</td><td>Summit Design</td><td>Retail</td><td>04/01/26</td><td style="color:var(--text-tertiary)">—</td><td><span class="badge badge-warning">Pending UW</span></td></tr>
+            <tr><td><span class="mono">S0345845</span></td><td>Commercial Package</td><td>River Materials</td><td>Wholesale</td><td>01/01/26</td><td style="font-weight:600">$8,200</td><td><span class="badge badge-neutral">Expired</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         PROGRESS
+         ══════════════════════════════════════════════════════════ -->
+    <section class="section" id="progress">
+      <div class="section-kicker">14 · Components</div>
+      <h2 class="section-title">Progress</h2>
+      <p class="section-desc">Show completion, quota usage, or pipeline stats. Brand color for on-track, amber for at-risk, red for critical.</p>
+      <hr class="section-rule">
+
+      <div class="demo-box">
+        <div class="demo-label">Progress bars</div>
+        <div class="demo-body col" style="padding:20px 16px;gap:0;width:100%">
+          <div class="progress-row"><div class="progress-head"><span>Submissions reviewed</span><span>82%</span></div><div class="progress-track"><div class="progress-fill" style="width:82%"></div></div></div>
+          <div class="progress-row"><div class="progress-head"><span>Approvals this month</span><span>64%</span></div><div class="progress-track"><div class="progress-fill" style="width:64%;background:var(--success)"></div></div></div>
+          <div class="progress-row"><div class="progress-head"><span>Renewals at risk</span><span>30%</span></div><div class="progress-track"><div class="progress-fill" style="width:30%;background:var(--warning)"></div></div></div>
+          <div class="progress-row" style="margin-bottom:0"><div class="progress-head"><span>Declined rate</span><span>8%</span></div><div class="progress-track"><div class="progress-fill" style="width:8%;background:var(--error)"></div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         TABS
+         ══════════════════════════════════════════════════════════ -->
+    <section class="section" id="tabs">
+      <div class="section-kicker">15 · Components</div>
+      <h2 class="section-title">Tabs</h2>
+      <p class="section-desc">Switch between views of the same content. Never use tabs for navigation between unrelated pages — use a sidebar or navbar for that.</p>
+      <hr class="section-rule">
+
+      <div class="demo-box">
+        <div class="demo-label">Default</div>
+        <div class="demo-body col" style="padding:16px;gap:16px">
+          <div class="tabs" style="width:100%">
+            <div class="tab active">Overview</div>
+            <div class="tab">In Progress</div>
+            <div class="tab">Approved</div>
+            <div class="tab">Reports</div>
+          </div>
+          <div style="font-size:14px;color:var(--text-secondary)">Tab content area — selected tab's content renders here.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         TOASTS
+         ══════════════════════════════════════════════════════════ -->
+    <section class="section" id="toasts">
+      <div class="section-kicker">16 · Components</div>
+      <h2 class="section-title">Toasts &amp; Tooltips</h2>
+      <p class="section-desc">Temporary feedback messages. Auto-dismiss after 4s. Include an action. Tooltips for contextual hints on hover.</p>
+      <hr class="section-rule">
+
+      <div class="demo-box">
+        <div class="demo-label">Toast variants</div>
+        <div class="demo-body col" style="padding:16px;gap:8px;align-items:flex-start">
+          <div class="toast toast-default"><span>✓</span><span>Changes saved successfully.</span><span class="toast-action">Undo</span></div>
+          <div class="toast toast-brand"><span>★</span><span>Welcome to <span id="toast-brand-name">Design Studio</span>.</span><span class="toast-action">Dismiss</span></div>
+          <div class="toast toast-error"><span>✕</span><span>Submission failed. Try again?</span><span class="toast-action" style="color:#FCA5A5">Retry</span></div>
+        </div>
+        <div class="demo-label">Tooltip</div>
+        <div class="demo-body" style="padding:32px 16px">
+          <div class="tooltip-demo">
+            <button class="btn btn-ghost btn-sm">Hover me</button>
+            <div class="tooltip-popup">Keyboard shortcut: ⌘ + S</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         MISC
+         ══════════════════════════════════════════════════════════ -->
+    <section class="section" id="misc">
+      <div class="section-kicker">17 · Components</div>
+      <h2 class="section-title">Chips &amp; Dividers</h2>
+      <p class="section-desc">Chips for multi-select filters. Dividers for visual hierarchy within sections — use sparingly.</p>
+      <hr class="section-rule">
+
+      <div class="demo-box">
+        <div class="demo-label">Filter chips</div>
+        <div class="demo-body">
+          <span class="chip selected">All</span>
+          <span class="chip">In Progress</span>
+          <span class="chip">Approved</span>
+          <span class="chip">Declined</span>
+          <span class="chip">Pending</span>
+          <span class="chip">Expired</span>
+        </div>
+        <div class="demo-label">Divider variants</div>
+        <div class="demo-body col" style="padding:16px;gap:8px;width:100%">
+          <hr class="divider" style="margin:8px 0;width:100%">
+          <div class="divider-text">or continue with</div>
+          <hr class="divider" style="margin:8px 0;width:100%">
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         DARK SURFACES
+         ══════════════════════════════════════════════════════════ -->
+    <section class="section" id="darksurfaces">
+      <div class="section-kicker">18 · Dark Mode</div>
+      <h2 class="section-title">Dark Surfaces</h2>
+      <p class="section-desc">Two dark modes — toggle between them using the sidebar. Brand-tinted surfaces keep your brand identity in dark mode. Neutral grey is the industry standard used by GitHub, VS Code, Linear, and Vercel.</p>
+      <hr class="section-rule">
+
+      <!-- Mode toggle -->
+      <div style="display:flex;gap:8px;margin-bottom:var(--sp-5)">
+        <button class="btn btn-primary btn-sm" id="ds-brand-btn" onclick="showDarkMode('brand')">Brand tinted</button>
+        <button class="btn btn-ghost btn-sm" id="ds-grey-btn" onclick="showDarkMode('grey')">Neutral grey ★ industry standard</button>
+      </div>
+
+      <!-- Brand tinted panel -->
+      <div id="ds-brand-panel">
+        <p style="font-size:12px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Brand-tinted surfaces — generated from your brand hue</p>
+        <div class="dark-demo" id="dark-surfaces-demo" style="background:hsl(var(--brand-h), 60%, 5%)"></div>
+        <div class="rule-box" style="margin-top:12px">
+          <strong>When to use:</strong> Products where brand identity is central — consumer apps, marketing tools, creative platforms. The brand color bleeds into every surface.
+        </div>
+      </div>
+
+      <!-- Neutral grey panel -->
+      <div id="ds-grey-panel" style="display:none">
+        <p style="font-size:12px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Neutral dark grey scale — used by GitHub, VS Code, Linear, Vercel</p>
+        <div style="background:#0D0D0D;border-radius:var(--r-xl);padding:var(--sp-5);display:flex;flex-direction:column;gap:10px" id="grey-scale-demo"></div>
+        <div class="rule-box" style="margin-top:12px">
+          <strong>When to use:</strong> Tools, dashboards, developer products, content-heavy apps. Neutral grey lets the content lead — brand color only appears on interactive elements, not surfaces. This is the most widely adopted dark mode pattern.
+        </div>
+
+        <!-- Full grey scale -->
+        <p style="font-size:12px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.06em;margin:20px 0 10px">Full neutral dark grey scale (--dg-*)</p>
+        <div style="display:flex;gap:0;border-radius:var(--r-xl);overflow:hidden;border:1px solid var(--border-default)" id="dg-scale-strip"></div>
+
+        <!-- Popular products reference -->
+        <p style="font-size:12px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.06em;margin:20px 0 10px">What popular products use</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px" id="product-dark-ref"></div>
+      </div>
+
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         DARK SEMANTICS
+         ══════════════════════════════════════════════════════════ -->
+    <section class="section" id="darksemantics">
+      <div class="section-kicker">19 · Dark Mode</div>
+      <h2 class="section-title">Dark Semantic Colors</h2>
+      <p class="section-desc">Semantic colors in dark mode are desaturated and lightened — bright greens and reds cause eye strain on dark surfaces. Toggle dark mode above to preview.</p>
+      <hr class="section-rule">
+
+      <div class="g2">
+        <div style="background:var(--success-bg);border:1px solid var(--success-border);border-radius:var(--r-lg);padding:14px 16px">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--success);margin-bottom:8px">Success</div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="width:28px;height:28px;border-radius:6px;background:var(--success-border);display:flex;align-items:center;justify-content:center;color:var(--success)">✓</div>
+            <div><div style="font-size:12px;font-weight:500;color:var(--success)">Approved</div><div style="font-size:10px;font-family:monospace;color:var(--success);opacity:.7">auto-adapts</div></div>
+          </div>
+        </div>
+        <div style="background:var(--warning-bg);border:1px solid var(--warning-border);border-radius:var(--r-lg);padding:14px 16px">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--warning);margin-bottom:8px">Warning</div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="width:28px;height:28px;border-radius:6px;background:var(--warning-border);display:flex;align-items:center;justify-content:center;color:var(--warning)">⚠</div>
+            <div><div style="font-size:12px;font-weight:500;color:var(--warning)">Pending</div><div style="font-size:10px;font-family:monospace;color:var(--warning);opacity:.7">auto-adapts</div></div>
+          </div>
+        </div>
+        <div style="background:var(--error-bg);border:1px solid var(--error-border);border-radius:var(--r-lg);padding:14px 16px">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--error);margin-bottom:8px">Error</div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="width:28px;height:28px;border-radius:6px;background:var(--error-border);display:flex;align-items:center;justify-content:center;color:var(--error)">✕</div>
+            <div><div style="font-size:12px;font-weight:500;color:var(--error)">Declined</div><div style="font-size:10px;font-family:monospace;color:var(--error);opacity:.7">auto-adapts</div></div>
+          </div>
+        </div>
+        <div style="background:var(--info-bg);border:1px solid var(--info-border);border-radius:var(--r-lg);padding:14px 16px">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--info);margin-bottom:8px">Info</div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="width:28px;height:28px;border-radius:6px;background:var(--info-border);display:flex;align-items:center;justify-content:center;color:var(--info)">ℹ</div>
+            <div><div style="font-size:12px;font-weight:500;color:var(--info)">Notice</div><div style="font-size:10px;font-family:monospace;color:var(--info);opacity:.7">auto-adapts</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         USAGE TOKENS
+         ══════════════════════════════════════════════════════════ -->
+    <section class="section" id="usagetokens">
+      <div class="section-kicker">20 · Tokens</div>
+      <h2 class="section-title">Usage Tokens</h2>
+      <p class="section-desc">Semantic aliases that reference the raw scale. Always use token names in components — never raw hex. When the brand changes, one update cascades to everything.</p>
+      <hr class="section-rule">
+
+      <div class="table-wrap">
+        <table class="ds-table">
+          <thead><tr><th>Token</th><th>CSS Variable</th><th>Light</th><th>Dark</th><th>Use for</th></tr></thead>
+          <tbody id="usage-token-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         EXPORT
+         ══════════════════════════════════════════════════════════ -->
+    <section class="section" id="export">
+      <div class="section-kicker">21 · Export</div>
+      <h2 class="section-title">Token Export</h2>
+      <p class="section-desc">Export all tokens as Tokens Studio JSON or copy as CSS custom properties. The JSON includes global (raw scale), semantic (light mode), and dark (dark mode overrides).</p>
+      <hr class="section-rule">
+
+      <div class="g2" style="margin-bottom:var(--sp-5)">
+        <button class="btn btn-primary btn-lg" onclick="exportTokens()" style="width:100%;justify-content:center">Download Tokens Studio JSON</button>
+        <button class="btn btn-outline btn-lg" onclick="copyAllCSS()" style="width:100%;justify-content:center">Copy CSS Variables</button>
+      </div>
+
+      <div class="json-block" id="json-preview"></div>
+
+      <div style="margin-top:var(--sp-5);padding:20px 24px;background:var(--surf-card);border:1px solid var(--border-default);border-radius:var(--r-xl);text-align:center">
+        <div style="font-family:var(--font-display);font-size:18px;font-weight:700;color:var(--text-primary);margin-bottom:4px">How to import in Tokens Studio</div>
+        <div style="font-size:13px;color:var(--text-secondary);margin-bottom:var(--sp-4)">Figma → Plugins → Tokens Studio → Settings → Import → Load tokens</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;font-size:12px;color:var(--text-tertiary)">
+          <span class="badge badge-brand">global set enabled</span>
+          <span class="badge badge-neutral">semantic for light mode</span>
+          <span class="badge badge-neutral">dark for dark mode</span>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div style="margin-top:var(--sp-12);padding-top:var(--sp-6);border-top:1px solid var(--border-default);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+        <div>
+          <div style="font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--text-primary)" id="footer-name">Design System Studio</div>
+          <div style="font-size:12px;color:var(--text-tertiary);margin-top:2px">v1.0 · 4px/8pt grid · Light + Dark · WCAG AA</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <span class="badge badge-brand">WCAG AA</span>
+          <span class="badge badge-success">Tokens Studio</span>
+          <span class="badge badge-neutral">DM Sans · DM Mono</span>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════════════════════
+         GRADIENTS
+         ══════════════════════════════════════════════════════════ -->
+    <section class="section" id="gradients">
+      <div class="section-kicker">22 · Extras</div>
+      <h2 class="section-title">Gradients</h2>
+      <p class="section-desc">Auto-generated from your brand and secondary colors. Click any gradient to copy its CSS. Updates live when you change the brand color.</p>
+      <hr class="section-rule">
+      <div id="gradient-grid"></div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         RESOURCES & TOOLS
+         ══════════════════════════════════════════════════════════ -->
+    <section class="section" id="resources">
+      <div class="section-kicker">23 · Extras</div>
+      <h2 class="section-title">Resources &amp; Tools</h2>
+      <p class="section-desc">Your saved design toolkit. Pre-loaded with the essentials — add your own favourites and they persist across sessions.</p>
+      <hr class="section-rule">
+
+      <!-- Add resource form -->
+      <div style="background:var(--surf-card);border:1px solid var(--border-default);border-radius:var(--r-xl);padding:var(--sp-5);margin-bottom:var(--sp-5)">
+        <div style="font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:var(--sp-3)">Add a tool</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 140px 100px;gap:10px;align-items:end">
+          <div class="field">
+            <label class="field-label">Tool name</label>
+            <input class="input" id="res-name" type="text" placeholder="e.g. Adobe Color">
+          </div>
+          <div class="field">
+            <label class="field-label">URL</label>
+            <input class="input" id="res-url" type="url" placeholder="https://...">
+          </div>
+          <div class="field">
+            <label class="field-label">Category</label>
+            <select class="select" id="res-cat">
+              <option value="Color">Color</option>
+              <option value="Icons">Icons</option>
+              <option value="Illustration">Illustration</option>
+              <option value="Accessibility">Accessibility</option>
+              <option value="Typography">Typography</option>
+              <option value="Tokens">Tokens</option>
+              <option value="Inspiration">Inspiration</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <button class="btn btn-primary" onclick="addResource()" style="height:40px">Add</button>
+        </div>
+        <div id="res-error" style="font-size:12px;color:var(--error);margin-top:6px;display:none">Please fill in name and URL.</div>
+      </div>
+
+      <!-- Filter tabs -->
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:var(--sp-4)" id="res-filter-row"></div>
+
+      <!-- Resource cards grid -->
+      <div id="resources-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px"></div>
+    </section>
+
+  </div><!-- /content -->
+</main>
+</div><!-- /app -->
+
+<div class="copy-toast" id="copy-toast">Copied!</div>
+
+<!-- ═════════════════════════════════════════════════════════════
+     JAVASCRIPT ENGINE
+     ═════════════════════════════════════════════════════════════ -->
+
+<!--
+  ============================================================
+  JS FILES — edit these to customize behaviour
+  ============================================================
+  engine.js → color math, WCAG, scale generation
+  render.js → DOM rendering for all sections
+  ui.js     → theme/grid toggle, dark modes, nav, export
+  main.js   → entry point, wires everything together
+  ============================================================
+-->
+<script type="module" src="./src/js/main.js"></script>
+
+</body>
+</html>
