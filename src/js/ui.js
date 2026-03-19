@@ -241,6 +241,8 @@ export function updateBrand(hex, updateInputs = true) {
   renderJsonPreview(hex, secHex, name)
   renderUsageTokens(hex, secHex)
   renderPairing()
+  // Refresh gradients with new brand color
+  renderGradients(hex, secHex)
 }
 
 export function updateSecondary(hex) {
@@ -499,4 +501,185 @@ export function initComponents() {
       chip.classList.add('selected')
     })
   })
+}
+
+
+/* ============================================================
+   GRADIENTS
+   Called every time the brand or secondary color changes.
+   ============================================================ */
+import { renderGradients } from './render.js'
+
+export function refreshGradients() {
+  const brandHex = document.getElementById('brand-hex-input')?.value || '#7A48CD'
+  const secHex   = document.getElementById('sec-hex-input')?.value   || '#D3507A'
+  renderGradients(brandHex, secHex)
+}
+
+export function copyCSS(cssValue, name) {
+  const css = `background: ${cssValue};`
+  navigator.clipboard.writeText(css).catch(() => {})
+  showCopyToast(`Copied: ${name}`)
+}
+
+
+/* ============================================================
+   RESOURCES & TOOLS
+   Saves to localStorage so tools persist across sessions.
+   ============================================================ */
+
+const DEFAULT_RESOURCES = [
+  // Color
+  { id: 1, name: 'Adobe Color Wheel',  url: 'https://color.adobe.com/create/color-wheel',        cat: 'Color',         desc: 'Find complementary, split-comp, triadic pairs from any hex' },
+  { id: 2, name: 'UI Colors',          url: 'https://uicolors.app',                               cat: 'Color',         desc: 'Generate full 50–950 Tailwind scale from one hex' },
+  { id: 3, name: 'Coolors',            url: 'https://coolors.co',                                 cat: 'Color',         desc: 'Lock brand color, hit spacebar — endless palette generation' },
+  { id: 4, name: 'Tints.dev',          url: 'https://www.tints.dev',                              cat: 'Color',         desc: 'Multi-scale generator — paste brand + secondary together' },
+  { id: 5, name: 'Huemint',            url: 'https://huemint.com',                                cat: 'Color',         desc: 'AI color schemes shown on real UI mockups' },
+  { id: 6, name: 'Palettte',           url: 'https://palettte.app',                               cat: 'Color',         desc: 'Fine-tune scale curves for perceptually uniform steps' },
+  // Accessibility
+  { id: 7, name: 'Who Can Use',        url: 'https://www.whocanuse.com',                          cat: 'Accessibility',  desc: 'WCAG contrast against 8 vision types — makes it human' },
+  { id: 8, name: 'WebAIM Contrast',    url: 'https://webaim.org/resources/contrastchecker',       cat: 'Accessibility',  desc: 'Gold standard WCAG AA/AAA checker — industry reference' },
+  { id: 9, name: 'Leonardo by Adobe',  url: 'https://leonardocolor.io',                           cat: 'Accessibility',  desc: 'Generate scales with guaranteed contrast ratios baked in' },
+  // Icons
+  { id: 10, name: 'Heroicons',         url: 'https://heroicons.com',                              cat: 'Icons',          desc: 'Outline + solid per icon — best for business dashboards' },
+  { id: 11, name: 'Lucide Icons',      url: 'https://lucide.dev',                                 cat: 'Icons',          desc: '1000+ icons, 1.5px stroke, consistent 24px grid' },
+  { id: 12, name: 'Phosphor Icons',    url: 'https://phosphoricons.com',                          cat: 'Icons',          desc: '6 styles per icon including duotone — most flexible' },
+  { id: 13, name: 'Tabler Icons',      url: 'https://tabler.io/icons',                            cat: 'Icons',          desc: '5000+ icons — has every niche insurance / finance icon' },
+  // Illustration
+  { id: 14, name: 'Undraw',            url: 'https://undraw.co/illustrations',                    cat: 'Illustration',   desc: 'Open-source SVG illustrations — set your brand color' },
+  { id: 15, name: 'Storyset',          url: 'https://storyset.com',                               cat: 'Illustration',   desc: 'Animated illustrations with customizable colors' },
+  { id: 16, name: 'Blush Design',      url: 'https://blush.design',                               cat: 'Illustration',   desc: 'Mix-and-match character illustrations' },
+  // Tokens
+  { id: 17, name: 'Tokens Studio',     url: 'https://tokens.studio',                              cat: 'Tokens',         desc: 'Import the JSON from this system directly into Figma' },
+  { id: 18, name: 'Style Dictionary',  url: 'https://styledictionary.com',                        cat: 'Tokens',         desc: 'Transform tokens to CSS, iOS, Android — Amazon standard' },
+  // Typography
+  { id: 19, name: 'Google Fonts',      url: 'https://fonts.google.com',                           cat: 'Typography',     desc: 'Free fonts — filter by category and weight' },
+  { id: 20, name: 'Font Pair',         url: 'https://www.fontpair.co',                            cat: 'Typography',     desc: 'Curated font pairings — display + body combinations' },
+  // Inspiration
+  { id: 21, name: 'Mobbin',            url: 'https://mobbin.com',                                 cat: 'Inspiration',    desc: 'Real app screenshots — the largest UI reference library' },
+  { id: 22, name: 'Dribbble',          url: 'https://dribbble.com',                               cat: 'Inspiration',    desc: 'Design shots — good for visual direction and color' },
+]
+
+const CAT_COLORS = {
+  'Color':         { bg: 'var(--color-brand-subtle)',     text: 'var(--color-brand)' },
+  'Accessibility': { bg: 'var(--success-bg)',             text: 'var(--success)' },
+  'Icons':         { bg: 'var(--warning-bg)',             text: 'var(--warning)' },
+  'Illustration':  { bg: 'var(--color-secondary-subtle)', text: 'var(--color-secondary)' },
+  'Tokens':        { bg: 'var(--info-bg)',                text: 'var(--info)' },
+  'Typography':    { bg: '#F3E8FF',                       text: '#7C3AED' },
+  'Inspiration':   { bg: 'var(--error-bg)',               text: 'var(--error)' },
+  'Other':         { bg: 'var(--surf-sunken)',            text: 'var(--text-secondary)' },
+}
+
+function getResources() {
+  try {
+    const saved = localStorage.getItem('ds-resources')
+    return saved ? JSON.parse(saved) : DEFAULT_RESOURCES
+  } catch { return DEFAULT_RESOURCES }
+}
+
+function saveResources(list) {
+  try { localStorage.setItem('ds-resources', JSON.stringify(list)) } catch {}
+}
+
+let activeFilter = 'All'
+
+export function renderResources(filter = activeFilter) {
+  activeFilter = filter
+  const all = getResources()
+  const filtered = filter === 'All' ? all : all.filter(r => r.cat === filter)
+
+  // Filter pills
+  const cats = ['All', ...new Set(all.map(r => r.cat))]
+  const filterRow = document.getElementById('res-filter-row')
+  if (filterRow) {
+    filterRow.innerHTML = cats.map(c => {
+      const col = CAT_COLORS[c] || CAT_COLORS['Other']
+      const isActive = c === filter
+      return `<button onclick="filterResources('${c}')"
+        style="padding:4px 12px;border-radius:9999px;font-size:12px;font-weight:500;cursor:pointer;border:1.5px solid ${isActive ? 'var(--color-brand)' : 'var(--border-default)'};background:${isActive ? 'var(--color-brand)' : 'var(--surf-card)'};color:${isActive ? '#fff' : 'var(--text-secondary)'};transition:all .15s;font-family:var(--font-sans)">
+        ${c} <span style="opacity:.6;font-size:10px">${c === 'All' ? all.length : all.filter(r => r.cat === c).length}</span>
+      </button>`
+    }).join('')
+  }
+
+  // Resource cards
+  const grid = document.getElementById('resources-grid')
+  if (!grid) return
+  if (filtered.length === 0) {
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:var(--sp-8);color:var(--text-secondary);font-size:14px">No tools in this category yet. Add one above.</div>`
+    return
+  }
+
+  grid.innerHTML = filtered.map(r => {
+    const col = CAT_COLORS[r.cat] || CAT_COLORS['Other']
+    return `
+    <div style="background:var(--surf-card);border:1px solid var(--border-default);border-radius:var(--r-xl);padding:var(--sp-4) var(--sp-4) var(--sp-3);box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:8px;transition:box-shadow .15s;position:relative"
+         onmouseenter="this.style.boxShadow='var(--shadow-md)'" onmouseleave="this.style.boxShadow='var(--shadow-sm)'">
+      <!-- Category badge + delete -->
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:9999px;background:${col.bg};color:${col.text}">${r.cat}</span>
+        <button onclick="deleteResource(${r.id})" title="Remove"
+          style="width:22px;height:22px;border-radius:50%;border:none;background:transparent;color:var(--text-disabled);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .15s;font-family:var(--font-sans)"
+          onmouseenter="this.style.background='var(--error-bg)';this.style.color='var(--error)'"
+          onmouseleave="this.style.background='transparent';this.style.color='var(--text-disabled)'">×</button>
+      </div>
+      <!-- Name -->
+      <div style="font-size:14px;font-weight:600;color:var(--text-primary)">${r.name}</div>
+      <!-- Description -->
+      <div style="font-size:12px;color:var(--text-secondary);line-height:1.55;flex:1">${r.desc}</div>
+      <!-- URL + open -->
+      <a href="${r.url}" target="_blank" rel="noopener"
+         style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--color-brand);font-weight:500;text-decoration:none;padding:7px 12px;border-radius:var(--r-md);border:1.5px solid var(--color-brand);background:transparent;justify-content:center;transition:all .15s"
+         onmouseenter="this.style.background='var(--color-brand-subtle)'"
+         onmouseleave="this.style.background='transparent'">
+        Open tool ↗
+      </a>
+    </div>`
+  }).join('')
+}
+
+export function addResource() {
+  const name  = document.getElementById('res-name')?.value?.trim()
+  const url   = document.getElementById('res-url')?.value?.trim()
+  const cat   = document.getElementById('res-cat')?.value
+  const error = document.getElementById('res-error')
+
+  if (!name || !url) {
+    if (error) error.style.display = 'block'
+    return
+  }
+  if (error) error.style.display = 'none'
+
+  const list = getResources()
+  const newId = Math.max(...list.map(r => r.id), 0) + 1
+  const cleanUrl = url.startsWith('http') ? url : 'https://' + url
+
+  list.push({ id: newId, name, url: cleanUrl, cat, desc: cleanUrl.replace('https://', '') })
+  saveResources(list)
+
+  // Clear inputs
+  ;['res-name', 'res-url'].forEach(id => {
+    const el = document.getElementById(id)
+    if (el) el.value = ''
+  })
+
+  renderResources(cat) // jump to the new category
+  showCopyToast(`${name} added!`)
+}
+
+export function deleteResource(id) {
+  const list = getResources().filter(r => r.id !== id)
+  saveResources(list)
+  renderResources()
+}
+
+export function filterResources(cat) {
+  renderResources(cat)
+}
+
+export function resetResources() {
+  localStorage.removeItem('ds-resources')
+  renderResources('All')
+  showCopyToast('Resources reset to defaults')
 }

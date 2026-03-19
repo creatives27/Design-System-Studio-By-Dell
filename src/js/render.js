@@ -275,3 +275,51 @@ export function showCopyToast(msg) {
   clearTimeout(toast._timer)
   toast._timer = setTimeout(() => toast.classList.remove('show'), 2000)
 }
+
+
+// ── GRADIENTS ─────────────────────────────────────────────────
+export function renderGradients(brandHex, secHex) {
+  const container = document.getElementById('gradient-grid')
+  if (!container) return
+
+  const gradients = [
+    // Linear — brand to secondary
+    { name: 'Brand → Secondary',    css: `linear-gradient(135deg, ${brandHex}, ${secHex})`,            type: 'Linear 135°',   use: 'Hero banners, CTAs' },
+    { name: 'Secondary → Brand',    css: `linear-gradient(135deg, ${secHex}, ${brandHex})`,            type: 'Linear 135°',   use: 'Reversed hero' },
+    { name: 'Brand horizontal',     css: `linear-gradient(90deg, ${brandHex}, ${secHex})`,             type: 'Linear 90°',    use: 'Progress bars' },
+    { name: 'Brand vertical',       css: `linear-gradient(180deg, ${brandHex}, ${secHex})`,            type: 'Linear 180°',   use: 'Sidebar accent' },
+
+    // Subtle tints (light mode)
+    { name: 'Brand tint (light)',   css: `linear-gradient(135deg, var(--p50), var(--s50))`,            type: 'Subtle tint',   use: 'Page sections, cards' },
+    { name: 'Brand 100 → 50',       css: `linear-gradient(135deg, var(--p100), var(--p50))`,           type: 'Mono tint',     use: 'Hover states, chips' },
+
+    // Dark surface gradients
+    { name: 'Brand dark',           css: `linear-gradient(135deg, var(--p950), var(--s950))`,          type: 'Dark',          use: 'Dark hero, banners' },
+    { name: 'Brand to transparent', css: `linear-gradient(135deg, ${brandHex}, transparent)`,         type: 'Fade out',      use: 'Image overlays' },
+
+    // Radial
+    { name: 'Radial brand',         css: `radial-gradient(circle at 30% 30%, ${brandHex}, var(--p900))`,   type: 'Radial',   use: 'Avatar bg, badges' },
+    { name: 'Radial secondary',     css: `radial-gradient(circle at 70% 30%, ${secHex}, var(--s900))`,     type: 'Radial',   use: 'Feature highlights' },
+
+    // Mesh / multi-stop
+    { name: 'Three-stop warm',      css: `linear-gradient(135deg, var(--p600), var(--s500), var(--p700))`, type: 'Multi-stop', use: 'Splash screens' },
+    { name: 'Brand + white fade',   css: `linear-gradient(135deg, ${brandHex} 0%, white 100%)`,        type: 'Fade to white', use: 'Section dividers' },
+  ]
+
+  container.innerHTML = gradients.map(g => `
+    <div style="margin-bottom:var(--sp-4)">
+      <div style="display:flex;gap:0;border-radius:var(--r-xl);overflow:hidden;border:1px solid var(--border-default);cursor:pointer"
+           onclick="copyCSS('${g.css.replace(/'/g,'&apos;')}', '${g.name}')"
+           title="Click to copy CSS">
+        <div style="height:80px;flex:1;background:${g.css}"></div>
+      </div>
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-top:8px;gap:8px">
+        <div>
+          <div style="font-size:13px;font-weight:500;color:var(--text-primary)">${g.name}</div>
+          <div style="font-size:11px;color:var(--text-secondary);margin-top:2px">${g.use}</div>
+        </div>
+        <span style="font-size:10px;font-weight:600;padding:2px 8px;border-radius:var(--r-full);background:var(--color-brand-subtle);color:var(--color-brand);white-space:nowrap;flex-shrink:0">${g.type}</span>
+      </div>
+      <div style="font-family:monospace;font-size:10px;color:var(--text-tertiary);margin-top:4px;word-break:break-all;line-height:1.5">background: ${g.css}</div>
+    </div>`).join('')
+}
