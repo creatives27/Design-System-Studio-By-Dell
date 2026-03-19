@@ -1,39 +1,51 @@
 /* ============================================================
-   TOKENS.CSS — Design System Custom Properties
+   TOKENS.CSS
    ============================================================
-   HOW TO EDIT:
-   - Change --font-sans / --font-display to swap fonts globally
-   - Change --brand-h, --brand-s, --brand-l to set the default brand color
-   - Change --r-md, --r-lg etc. to adjust all corner radii
-   - The JS engine (engine.js) overwrites brand values live in the browser
+   ✏️  EDIT THIS FILE when starting a new project:
+
+   1. Change --brand-h / --brand-s / --brand-l  → brand color
+   2. Change --secondary-h / -s / -l            → secondary color
+   3. Change --font-sans / --font-display        → fonts
+   4. Change --r-* values                        → border radius feel
+   5. Choose dark mode style in your HTML:
+      data-theme="dark"              → brand-tinted surfaces
+      data-theme="dark" data-dark="grey" → neutral grey surfaces
    ============================================================ */
 
+
+/* ============================================================
+   BRAND COLORS
+   The JS engine overwrites these live in the browser.
+   These are the default values that load on page open.
+   ============================================================ */
 :root {
-  /* ── BRAND COLOR (overwritten live by engine.js) ──────────── */
+  /* Brand — H/S/L of your primary color
+     Purple #7A48CD = H:262 S:57% L:55%
+     Convert any hex → HSL at hslpicker.com              */
   --brand-h: 262;
   --brand-s: 57%;
   --brand-l: 55%;
-  --brand-hex: #7A48CD;
 
+  /* Secondary / accent color
+     Rose #D3507A = H:335 S:57% L:57%                   */
   --secondary-h: 335;
   --secondary-s: 57%;
   --secondary-l: 57%;
-  --secondary-hex: #D3507A;
 
-  /* ── GENERATED BRAND SCALE (auto from brand-h/s/l) ───────── */
+  /* ── GENERATED BRAND SCALE (auto-derived from above) ── */
   --p50:  hsl(var(--brand-h), 80%, 97%);
   --p100: hsl(var(--brand-h), 70%, 93%);
   --p200: hsl(var(--brand-h), 60%, 86%);
   --p300: hsl(var(--brand-h), 55%, 76%);
   --p400: hsl(var(--brand-h), 52%, 65%);
   --p500: hsl(var(--brand-h), 54%, 60%);
-  --p600: hsl(var(--brand-h), var(--brand-s), var(--brand-l));
+  --p600: hsl(var(--brand-h), var(--brand-s), var(--brand-l)); /* ← Brand base */
   --p700: hsl(var(--brand-h), 55%, 45%);
   --p800: hsl(var(--brand-h), 56%, 35%);
   --p900: hsl(var(--brand-h), 58%, 25%);
   --p950: hsl(var(--brand-h), 60%, 18%);
 
-  /* ── GENERATED SECONDARY SCALE ────────────────────────────── */
+  /* ── GENERATED SECONDARY SCALE ─────────────────────── */
   --s50:  hsl(var(--secondary-h), 80%, 97%);
   --s100: hsl(var(--secondary-h), 70%, 92%);
   --s200: hsl(var(--secondary-h), 62%, 83%);
@@ -46,7 +58,12 @@
   --s900: hsl(var(--secondary-h), 58%, 21%);
   --s950: hsl(var(--secondary-h), 60%, 14%);
 
-  /* ── NEUTRAL GREY SCALE (fixed — slight purple undertone) ─── */
+
+/* ============================================================
+   NEUTRAL GREY SCALE
+   Fixed values — slight purple undertone.
+   Never changes with brand color.
+   ============================================================ */
   --g50:  #F7F7FB;
   --g100: #EFEFF0;
   --g200: #D9D8DB;
@@ -59,23 +76,62 @@
   --g900: #423F44;
   --g950: #2B292D;
 
-  /* ── SEMANTIC / FUNCTIONAL COLORS ─────────────────────────── */
-  /* Edit these to change your success/warning/error/info palette */
+
+/* ============================================================
+   DARK GREY SCALE  (--dg-*)
+   Pure neutral dark — no brand hue.
+   Used by GitHub, VS Code, Linear, Vercel, Notion, Raycast.
+   These are FIXED values — same for every project.
+   Use in [data-dark="grey"] dark mode (see below).
+   ============================================================ */
+  --dg-950: #0D0D0D;  /* Deepest — behind everything            */
+  --dg-900: #111111;  /* Page background  (GitHub Dark)          */
+  --dg-875: #141414;  /* Page bg alt                             */
+  --dg-850: #171717;  /* App canvas       (Vercel)               */
+  --dg-800: #1A1A1A;  /* Card surface     (Linear)               */
+  --dg-775: #1E1E1E;  /* VS Code editor background               */
+  --dg-750: #222222;  /* Raised panel                            */
+  --dg-700: #252525;  /* Sidebar, modal   (Notion dark)          */
+  --dg-650: #2A2A2A;  /* Overlay / hover fill                    */
+  --dg-600: #303030;  /* Float — dropdown, tooltip               */
+  --dg-550: #383838;  /* Border subtle                           */
+  --dg-500: #404040;  /* Border default                          */
+  --dg-450: #4A4A4A;  /* Border strong / divider                 */
+  --dg-400: #525252;  /* Disabled text                           */
+  --dg-300: #6B6B6B;  /* Tertiary text / placeholder             */
+  --dg-200: #8A8A8A;  /* Secondary text (muted)                  */
+  --dg-150: #A0A0A0;  /* Secondary text (comfortable)            */
+  --dg-100: #B8B8B8;  /* Body text on dark                       */
+  --dg-50:  #E0E0E0;  /* Primary text — near white               */
+  --dg-0:   #F5F5F5;  /* Brightest — headings, labels            */
+
+
+/* ============================================================
+   SEMANTIC / FUNCTIONAL COLORS
+   ✏️  Edit these to change success/warning/error/info globally.
+   ============================================================ */
   --success:        #15803D;
   --success-bg:     #F0FDF4;
   --success-border: #BBF7D0;
+
   --warning:        #B45309;
   --warning-bg:     #FFFBEB;
   --warning-border: #FDE68A;
+
   --error:          #B91C1C;
   --error-bg:       #FEF2F2;
   --error-border:   #FECACA;
+
   --info:           #1D4ED8;
   --info-bg:        #EFF6FF;
   --info-border:    #BFDBFE;
 
-  /* ── SEMANTIC ALIASES — LIGHT MODE ────────────────────────── */
-  /* These are what you use in components — not raw hex */
+
+/* ============================================================
+   SEMANTIC ALIASES — LIGHT MODE
+   These are what you reference in components.
+   Never use raw hex in components — always use these tokens.
+   ============================================================ */
   --color-brand:            var(--p600);
   --color-brand-hover:      var(--p700);
   --color-brand-active:     var(--p800);
@@ -93,10 +149,10 @@
   --text-brand:     var(--p600);
   --text-accent:    var(--s600);
 
-  --surf-page:   var(--g50);
-  --surf-card:   #fff;
-  --surf-raised: #fff;
-  --surf-sunken: var(--g100);
+  --surf-page:    var(--g50);
+  --surf-card:    #fff;
+  --surf-raised:  #fff;
+  --surf-sunken:  var(--g100);
   --surf-overlay: rgba(0, 0, 0, 0.45);
 
   --border-subtle:  var(--g100);
@@ -109,8 +165,11 @@
   --shadow-lg:    0 12px 32px rgba(0, 0, 0, 0.14);
   --shadow-focus: 0 0 0 3px color-mix(in srgb, var(--p600) 25%, transparent);
 
-  /* ── SPACING — 4px GRID (default) ─────────────────────────── */
-  /* Switch to 8pt in [data-grid="8"] below */
+
+/* ============================================================
+   SPACING — 4px GRID (default)
+   ✏️  Switch to 8pt in [data-grid="8"] override below.
+   ============================================================ */
   --grid-unit: 4px;
   --sp-1:  4px;
   --sp-2:  8px;
@@ -124,19 +183,26 @@
   --sp-16: 64px;
   --sp-20: 80px;
 
-  /* ── BORDER RADIUS ─────────────────────────────────────────── */
-  /* Edit these to change the roundness feel of the entire system */
-  --r-none: 0;
-  --r-sm:   4px;
-  --r-md:   8px;
-  --r-lg:   12px;
-  --r-xl:   16px;
-  --r-2xl:  24px;
-  --r-full: 9999px;
 
-  /* ── TYPOGRAPHY ────────────────────────────────────────────── */
-  /* Edit --font-sans to change the main UI font globally */
-  /* Edit --font-display to change heading font only */
+/* ============================================================
+   BORDER RADIUS
+   ✏️  Edit these to change the roundness of the entire system.
+   Sharp product → lower values. Friendly product → higher.
+   ============================================================ */
+  --r-none: 0;
+  --r-sm:   4px;   /* Tags, chips                */
+  --r-md:   8px;   /* Buttons, inputs            */
+  --r-lg:   12px;  /* Alerts, modals             */
+  --r-xl:   16px;  /* Cards, panels              */
+  --r-2xl:  24px;  /* Large feature cards        */
+  --r-full: 9999px; /* Pills, avatars, toggles   */
+
+
+/* ============================================================
+   TYPOGRAPHY
+   ✏️  Edit --font-sans to change the main UI font globally.
+       Edit --font-display to change heading font only.
+   ============================================================ */
   --font-sans:    'Helvetica Neue', Helvetica, Arial, sans-serif;
   --font-display: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --font-mono:    'DM Mono', 'Courier New', monospace;
@@ -146,12 +212,16 @@
   --fw-semibold: 600;
   --fw-bold:     700;
 
-  /* ── SIDEBAR WIDTH ─────────────────────────────────────────── */
+
+  /* Sidebar width */
   --sidebar-w: 256px;
 }
 
-/* ── APPLE 8pt GRID OVERRIDE ─────────────────────────────────── */
-/* Toggled by JS when user clicks "8pt Apple" button */
+
+/* ============================================================
+   APPLE 8pt GRID OVERRIDE
+   Toggled when user clicks "8pt Apple" in the sidebar.
+   ============================================================ */
 [data-grid="8"] {
   --grid-unit: 8px;
   --sp-1:  8px;
@@ -164,7 +234,7 @@
   --sp-10: 80px;
   --sp-12: 96px;
   --sp-16: 128px;
-  /* Apple HIG uses slightly larger radius values */
+  /* Apple HIG uses slightly larger radius */
   --r-sm:  6px;
   --r-md:  10px;
   --r-lg:  14px;
@@ -172,9 +242,15 @@
   --r-2xl: 28px;
 }
 
-/* ── DARK MODE OVERRIDES ─────────────────────────────────────── */
-/* Toggled by JS when user clicks "Dark" button */
-/* All dark surface colors are generated from the brand hue */
+
+/* ============================================================
+   DARK MODE — BRAND TINTED
+   ──────────────────────────────────────────────────────────
+   Surfaces carry a subtle brand hue — feels on-brand.
+   Best for: consumer apps, creative tools, branded products.
+
+   To use: <html data-theme="dark">
+   ============================================================ */
 [data-theme="dark"] {
   --surf-page:    hsl(var(--brand-h), 60%, 7%);
   --surf-card:    hsl(var(--brand-h), 55%, 10%);
@@ -198,7 +274,6 @@
   --color-secondary:        hsl(var(--secondary-h), 65%, 72%);
   --color-secondary-hover:  hsl(var(--secondary-h), 60%, 62%);
   --color-secondary-subtle: hsl(var(--secondary-h), 42%, 18%);
-
   --text-brand:  hsl(var(--brand-h), 65%, 75%);
   --text-accent: hsl(var(--secondary-h), 65%, 75%);
 
@@ -207,7 +282,69 @@
   --shadow-lg:    0 12px 40px rgba(0, 0, 0, 0.6);
   --shadow-focus: 0 0 0 3px color-mix(in srgb, var(--color-brand) 30%, transparent);
 
-  /* Dark mode semantic colors — desaturated for eye comfort */
+  /* Semantic — desaturated for eye comfort on dark */
+  --success:        #4ADE80;
+  --success-bg:     #0D2B1A;
+  --success-border: #145228;
+  --warning:        #FCD34D;
+  --warning-bg:     #2B1F07;
+  --warning-border: #4A370A;
+  --error:          #FCA5A5;
+  --error-bg:       #2B0D0D;
+  --error-border:   #4A1414;
+  --info:           #93C5FD;
+  --info-bg:        #0C1A35;
+  --info-border:    #142D5C;
+}
+
+
+/* ============================================================
+   DARK MODE — NEUTRAL GREY  ★ Industry standard
+   ──────────────────────────────────────────────────────────
+   Pure neutral grey surfaces — NO brand hue on backgrounds.
+   Brand color only appears on interactive elements.
+   Used by: GitHub, VS Code, Linear, Vercel, Notion, Raycast.
+   Best for: tools, dashboards, dev products, data-heavy apps.
+
+   To use: <html data-theme="dark" data-dark="grey">
+   ============================================================ */
+[data-theme="dark"][data-dark="grey"] {
+  /* Surfaces — standard neutral dark (no brand tint) */
+  --surf-page:    var(--dg-900);   /* #111111 — GitHub page bg      */
+  --surf-card:    var(--dg-800);   /* #1A1A1A — Linear card         */
+  --surf-raised:  var(--dg-700);   /* #252525 — Notion panel        */
+  --surf-sunken:  var(--dg-950);   /* #0D0D0D — deepest sunken      */
+  --surf-overlay: rgba(0, 0, 0, 0.7);
+
+  /* Borders */
+  --border-subtle:  var(--dg-550); /* #383838 */
+  --border-default: var(--dg-500); /* #404040 */
+  --border-strong:  var(--dg-450); /* #4A4A4A */
+
+  /* Text — pure neutral, no brand undertone */
+  --text-primary:   var(--dg-0);   /* #F5F5F5 */
+  --text-secondary: var(--dg-150); /* #A0A0A0 */
+  --text-tertiary:  var(--dg-300); /* #6B6B6B */
+  --text-disabled:  var(--dg-400); /* #525252 */
+
+  /* Brand stays vivid on neutral — lightened for contrast */
+  --color-brand:            hsl(var(--brand-h), 65%, 70%);
+  --color-brand-hover:      hsl(var(--brand-h), 60%, 60%);
+  --color-brand-subtle:     #1E1E2A;  /* Slight brand tint only in subtle */
+  --color-brand-border:     #2E2E42;
+  --color-secondary:        hsl(var(--secondary-h), 65%, 72%);
+  --color-secondary-hover:  hsl(var(--secondary-h), 60%, 62%);
+  --color-secondary-subtle: #221A22;
+  --text-brand:  hsl(var(--brand-h), 65%, 75%);
+  --text-accent: hsl(var(--secondary-h), 65%, 75%);
+
+  /* Stronger shadows — neutral dark needs more depth signal */
+  --shadow-sm:    0 1px 4px rgba(0, 0, 0, 0.5);
+  --shadow-md:    0 4px 20px rgba(0, 0, 0, 0.6);
+  --shadow-lg:    0 12px 40px rgba(0, 0, 0, 0.7);
+  --shadow-focus: 0 0 0 3px color-mix(in srgb, var(--color-brand) 30%, transparent);
+
+  /* Same semantic values — work for both dark modes */
   --success:        #4ADE80;
   --success-bg:     #0D2B1A;
   --success-border: #145228;

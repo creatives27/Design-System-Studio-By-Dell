@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="shortcut icon" href="/src/assets/favicon.png" type="image/x-icon">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Design System Studio By Dell</title>
+<title>Design System Studio by Dell</title>
 
 <!-- DM Mono only — UI uses system Helvetica -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -71,10 +71,6 @@
     <div class="sb-section-label">Dark Mode</div>
     <a class="sb-link" data-target="darksurfaces"><span class="sb-dot"></span>Dark Surfaces</a>
     <a class="sb-link" data-target="darksemantics"><span class="sb-dot"></span>Dark Semantics</a>
-
-    <div class="sb-section-label">Extras</div>
-    <a class="sb-link" data-target="gradients"><span class="sb-dot"></span>Gradients</a>
-    <a class="sb-link" data-target="resources"><span class="sb-dot"></span>Resources & Tools</a>
 
     <div class="sb-section-label">Tokens</div>
     <a class="sb-link" data-target="usagetokens"><span class="sb-dot"></span>Usage Tokens</a>
@@ -882,64 +878,6 @@
           <span class="badge badge-neutral">DM Sans · DM Mono</span>
         </div>
       </div>
-    </section>
-
-
-    <!-- ══════════════════════════════════════════════════════════
-         GRADIENTS
-         ══════════════════════════════════════════════════════════ -->
-    <section class="section" id="gradients">
-      <div class="section-kicker">22 · Extras</div>
-      <h2 class="section-title">Gradients</h2>
-      <p class="section-desc">Auto-generated from your brand and secondary colors. Click any gradient to copy its CSS. Updates live when you change the brand color.</p>
-      <hr class="section-rule">
-      <div id="gradient-grid"></div>
-    </section>
-
-    <!-- ══════════════════════════════════════════════════════════
-         RESOURCES & TOOLS
-         ══════════════════════════════════════════════════════════ -->
-    <section class="section" id="resources">
-      <div class="section-kicker">23 · Extras</div>
-      <h2 class="section-title">Resources &amp; Tools</h2>
-      <p class="section-desc">Your saved design toolkit. Pre-loaded with the essentials — add your own favourites and they persist across sessions.</p>
-      <hr class="section-rule">
-
-      <!-- Add resource form -->
-      <div style="background:var(--surf-card);border:1px solid var(--border-default);border-radius:var(--r-xl);padding:var(--sp-5);margin-bottom:var(--sp-5)">
-        <div style="font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:var(--sp-3)">Add a tool</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 140px 100px;gap:10px;align-items:end">
-          <div class="field">
-            <label class="field-label">Tool name</label>
-            <input class="input" id="res-name" type="text" placeholder="e.g. Adobe Color">
-          </div>
-          <div class="field">
-            <label class="field-label">URL</label>
-            <input class="input" id="res-url" type="url" placeholder="https://...">
-          </div>
-          <div class="field">
-            <label class="field-label">Category</label>
-            <select class="select" id="res-cat">
-              <option value="Color">Color</option>
-              <option value="Icons">Icons</option>
-              <option value="Illustration">Illustration</option>
-              <option value="Accessibility">Accessibility</option>
-              <option value="Typography">Typography</option>
-              <option value="Tokens">Tokens</option>
-              <option value="Inspiration">Inspiration</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-          <button class="btn btn-primary" onclick="addResource()" style="height:40px">Add</button>
-        </div>
-        <div id="res-error" style="font-size:12px;color:var(--error);margin-top:6px;display:none">Please fill in name and URL.</div>
-      </div>
-
-      <!-- Filter tabs -->
-      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:var(--sp-4)" id="res-filter-row"></div>
-
-      <!-- Resource cards grid -->
-      <div id="resources-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px"></div>
     </section>
 
   </div><!-- /content -->
